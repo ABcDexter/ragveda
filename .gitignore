@@ -29,7 +29,7 @@ build/
 Thumbs.db
 
 # Data files (keep structure but not actual large data files)
-data/gita.txt
+# data/gita.txt  # Uncomment to exclude your actual gita.txt from git
 
 # Environment variables
 .env
