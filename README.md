@@ -1,0 +1,2 @@
+# ragveda
+Ṛgveda + RAG application
