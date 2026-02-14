@@ -33,8 +33,8 @@ npm run dev
 1. **Prerequisites**: Install Python 3.8+ and Node.js 16+
 
 2. **Add your data**: 
-   - Place `gita.txt` in the `data/` directory
-   - The file should contain the Bhagavad Gita text (3000 lines)
+   - A sample `gita.txt` is already in the `data/` directory (~185 lines with key verses)
+   - For a complete experience, replace with the full Bhagavad Gita text (~3000 lines)
 
 3. **Start the backend**:
    ```bash

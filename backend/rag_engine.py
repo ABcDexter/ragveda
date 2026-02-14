@@ -6,6 +6,8 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import asyncio
 
+from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, COLLECTION_NAME
+
 class RAGEngine:
     """
     Retrieval Augmented Generation engine for Indian philosophy texts
@@ -13,7 +15,7 @@ class RAGEngine:
     
     def __init__(self, data_file_path: str):
         self.data_file_path = Path(data_file_path)
-        self.collection_name = "indian_philosophy"
+        self.collection_name = COLLECTION_NAME
         self.embedding_model = None
         self.chroma_client = None
         self.collection = None
@@ -25,7 +27,7 @@ class RAGEngine:
         
         # Initialize embedding model
         print("Loading embedding model...")
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        self.embedding_model = SentenceTransformer(EMBEDDING_MODEL)
         
         # Initialize ChromaDB
         print("Initializing ChromaDB...")
@@ -61,7 +63,7 @@ class RAGEngine:
             text = f.read()
         
         # Split into chunks
-        chunks = self._chunk_text(text, chunk_size=500, overlap=50)
+        chunks = self._chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP)
         print(f"Created {len(chunks)} chunks from the text")
         
         # Create embeddings and add to collection

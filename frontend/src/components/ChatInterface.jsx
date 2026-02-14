@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
+import API_BASE_URL from '../config'
 
 function ChatInterface({ apiReady }) {
   const [messages, setMessages] = useState([])
@@ -30,7 +31,7 @@ function ChatInterface({ apiReady }) {
     setLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:8000/ask', {
+      const response = await axios.post(`${API_BASE_URL}/ask`, {
         question: input,
         context_limit: 3
       })

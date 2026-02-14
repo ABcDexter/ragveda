@@ -3,6 +3,7 @@ import './App.css'
 import ChatInterface from './components/ChatInterface'
 import Header from './components/Header'
 import StatusBar from './components/StatusBar'
+import API_BASE_URL from './config'
 
 function App() {
   const [apiStatus, setApiStatus] = useState({ status: 'checking', ready: false })
@@ -17,7 +18,7 @@ function App() {
 
   const checkApiHealth = async () => {
     try {
-      const response = await fetch('http://localhost:8000/health')
+      const response = await fetch(`${API_BASE_URL}/health`)
       const data = await response.json()
       setApiStatus(data)
     } catch (error) {

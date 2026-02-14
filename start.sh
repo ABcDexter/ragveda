@@ -15,7 +15,13 @@ fi
 # Start backend
 echo "Starting backend server..."
 cd backend
-python3 -m venv venv 2>/dev/null || true
+
+# Create venv only if it doesn't exist
+if [ ! -d "venv" ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv venv
+fi
+
 source venv/bin/activate
 pip install -q -r requirements.txt
 python main.py &
@@ -29,7 +35,13 @@ sleep 3
 # Start frontend
 echo "Starting frontend server..."
 cd frontend
-npm install 2>/dev/null || true
+
+# Install npm dependencies only if node_modules doesn't exist
+if [ ! -d "node_modules" ]; then
+    echo "Installing npm dependencies..."
+    npm install
+fi
+
 npm run dev &
 FRONTEND_PID=$!
 cd ..

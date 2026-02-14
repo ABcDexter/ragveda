@@ -56,7 +56,8 @@ pip install -r requirements.txt
 ```
 
 4. Add your data file:
-   - Place `gita.txt` in the `data/` directory (3000 lines)
+   - A sample `gita.txt` is already in the `data/` directory (~185 lines with key verses)
+   - For a complete experience, replace with the full Bhagavad Gita text (~3000 lines)
    - The text will be automatically chunked and embedded on startup
 
 5. Start the backend server:
@@ -123,10 +124,10 @@ Once the backend is running, visit:
 
 ### Backend Configuration
 
-Edit `backend/rag_engine.py` to adjust:
-- `chunk_size`: Size of text chunks (default: 500 characters)
-- `overlap`: Overlap between chunks (default: 50 characters)
-- `embedding_model`: Sentence transformer model (default: 'all-MiniLM-L6-v2')
+Edit `backend/config.py` to adjust:
+- `EMBEDDING_MODEL`: Sentence transformer model (default: 'all-MiniLM-L6-v2')
+- `CHUNK_SIZE`: Size of text chunks (default: 500 characters)
+- `CHUNK_OVERLAP`: Overlap between chunks (default: 50 characters)
 
 ### Frontend Configuration
 

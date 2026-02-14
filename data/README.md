@@ -4,7 +4,9 @@ This directory contains the text data for the RAG application.
 
 ## Required File
 
-Please add `gita.txt` to this directory. The file should contain the Bhagavad Gita text (approximately 3000 lines).
+Please add `gita.txt` to this directory. The file should contain the Bhagavad Gita text.
+
+A sample file with key verses (~185 lines) is already provided. For a complete experience, you can replace it with a full version of the Bhagavad Gita (typically ~3000 lines).
 
 ### Format
 
