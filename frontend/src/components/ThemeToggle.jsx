@@ -33,7 +33,7 @@ function ThemeToggle() {
       className="justify-between border border-border bg-background/80"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
-      <span className="text-sm font-medium">{isDark ? '🌙 Dark' : '☀️ Light'}</span>
+      <span className="text-sm font-medium">{isDark ? '🌙' : '☀️'}</span>
       <span className="text-xs text-muted-foreground">Theme</span>
     </Button>
   )

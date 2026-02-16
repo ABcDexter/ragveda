@@ -9,7 +9,7 @@ function Header() {
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-4 text-left">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge>Ragveda RAG</Badge>
+            <Badge>Retrieval-Augmented Generation</Badge>
             <Badge variant="outline">Bhagavad Gita</Badge>
             <Badge variant="secondary">FastAPI · React</Badge>
           </div>
