@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 import ChatInterface from './components/ChatInterface'
 import Header from './components/Header'
 import StatusBar from './components/StatusBar'
@@ -27,10 +26,17 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Header />
-      <StatusBar status={apiStatus} />
-      <ChatInterface apiReady={apiStatus.ready} />
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
+      <div className="container py-10">
+        <div className="space-y-6">
+          <Header />
+          <StatusBar status={apiStatus} />
+          <ChatInterface apiReady={apiStatus.ready} />
+        </div>
+        <footer className="mt-10 text-center text-sm text-muted-foreground">
+          Built with Ragveda · API {API_BASE_URL}
+        </footer>
+      </div>
     </div>
   )
 }
