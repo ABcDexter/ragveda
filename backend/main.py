@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional
 import os
@@ -25,6 +27,10 @@ app.add_middleware(
 # Initialize RAG engine
 rag_engine = None
 
+dist_path = Path(__file__).parent.parent / "frontend" / "dist"
+assets_path = dist_path / "assets"
+frontend_ready = False
+
 class Question(BaseModel):
     question: str
     context_limit: Optional[int] = 3
@@ -37,7 +43,7 @@ class Answer(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Initialize RAG engine on startup"""
-    global rag_engine
+    global rag_engine, frontend_ready
     data_path = Path(__file__).parent.parent / "data" / "gita.txt"
     rag_engine = RAGEngine(str(data_path))
     
@@ -49,18 +55,23 @@ async def startup_event():
         print(f"⚠ Data file not found at {data_path}")
         print("  Please add gita.txt to the data directory")
 
+    if dist_path.exists() and dist_path.is_dir() and any(dist_path.iterdir()):
+        frontend_ready = True
+        if assets_path.exists() and assets_path.is_dir():
+            app.mount("/assets", StaticFiles(directory=str(assets_path)), name="assets")
+    else:
+        frontend_ready = False
+        print("⚠ Frontend build not found or empty. Run 'npm run build' in frontend.")
+
 @app.get("/")
 async def root():
-    """Root endpoint"""
-    return {
-        "message": "Welcome to Ragveda API",
-        "description": "RAG application for Indian philosophies",
-        "endpoints": {
-            "POST /ask": "Ask a question about Indian philosophy",
-            "GET /health": "Check API health",
-            "GET /stats": "Get database statistics"
-        }
-    }
+    """Serve frontend if available, else return an error."""
+    if not frontend_ready:
+        raise HTTPException(
+            status_code=503,
+            detail="Frontend build not found. Run 'npm run build' in the frontend folder."
+        )
+    return FileResponse(dist_path / "index.html")
 
 @app.get("/health")
 async def health():
@@ -113,4 +124,5 @@ async def ask_question(question: Question):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
