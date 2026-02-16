@@ -5,7 +5,7 @@ from typing import List, Optional
 import os
 from pathlib import Path
 
-from rag_engine import RAGEngine
+from backend.rag_engine import RAGEngine
 
 app = FastAPI(
     title="Ragveda - Indian Philosophy RAG API",
