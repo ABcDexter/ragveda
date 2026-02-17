@@ -21,6 +21,7 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
+COPY data/ ./data/
 
 # Cloud Run requires port 8080
 ENV PORT=8080
