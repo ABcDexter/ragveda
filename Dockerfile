@@ -2,9 +2,9 @@
 FROM node:20 AS frontend-builder
 
 WORKDIR /app/frontend
-COPY frontend/package*.json ./
+COPY ./frontend/package*.json ./
 RUN npm install
-COPY frontend/ .
+COPY ./frontend/ .
 RUN npm run build
 
 
@@ -14,14 +14,14 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy backend
-COPY backend/ ./backend/
+COPY ./backend/ ./backend/
 
 # Install backend dependencies
-RUN pip install --no-cache-dir -r backend/requirements.txt
+RUN pip install --no-cache-dir -r ./backend/requirements.txt
 
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
-COPY data/ ./data/
+COPY ./data/ ./data/
 
 # Cloud Run requires port 8080
 ENV PORT=8080
