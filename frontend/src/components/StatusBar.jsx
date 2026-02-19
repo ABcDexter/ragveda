@@ -32,12 +32,12 @@ function StatusBar({ status }) {
 
   const getMessageClass = () => {
     if (status.status === 'error') {
-      return 'text-black-400 dark:text-rose-200'
+      return 'text-rose-800 dark:text-rose-200'
     }
     if (status.status === 'healthy' && status.ready) {
-      return 'text-black-400 dark:text-emerald-200'
+      return 'text-foreground dark:text-emerald-200'
     }
-    return 'text-black dark:text-amber-200'
+    return 'text-foreground dark:text-amber-200'
   }
 
   return (
