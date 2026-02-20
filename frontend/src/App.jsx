@@ -34,7 +34,7 @@ function App() {
           <ChatInterface apiReady={apiStatus.ready} />
         </div>
         <footer className="mt-10 text-center text-sm text-muted-foreground">
-          Built with Ragveda · API {API_BASE_URL}
+          Built with ❤️ · Powered by FastAPI & React · Inspired by the Bhagavad Gita...
         </footer>
       </div>
     </div>
