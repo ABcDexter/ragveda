@@ -22,12 +22,12 @@ function StatusBar({ status }) {
 
   const getBadgeClass = () => {
     if (status.status === 'healthy' && status.ready) {
-      return 'border-emerald-200 text-emerald-700 dark:border-emerald-500/40 dark:text-emerald-200'
+      return 'border-emerald-200 text-black dark:border-emerald-500/40 dark:text-emerald-200'
     }
     if (status.status === 'error') {
-      return 'border-rose-200 text-rose-700 dark:border-rose-500/40 dark:text-rose-200'
+      return 'border-rose-200 text-black dark:border-rose-500/40 dark:text-rose-200'
     }
-    return 'border-amber-200 text-amber-700 dark:border-amber-500/40 dark:text-amber-200'
+    return 'border-amber-200 text-black dark:border-amber-500/40 dark:text-amber-200'
   }
 
   const getMessageClass = () => {

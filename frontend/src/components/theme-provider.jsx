@@ -31,6 +31,7 @@ export function ThemeProvider({ children, defaultTheme = 'system' }) {
       root.classList.remove('dark')
     }
     window.localStorage.setItem(STORAGE_KEY, theme)
+    console.log('[theme]', { theme, resolvedTheme, hasDarkClass: root.classList.contains('dark') })
   }, [resolvedTheme, theme])
 
   const value = useMemo(
