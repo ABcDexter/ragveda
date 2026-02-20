@@ -6,12 +6,12 @@ function StatusBar({ status }) {
 
   const getStatusClass = () => {
     if (status.status === 'healthy' && status.ready) {
-      return 'bg-emerald-50 text-emerald-900 border-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-200 dark:border-emerald-500/30'
+      return 'bg-emerald-50 border-emerald-100 dark:bg-emerald-500/15 dark:border-emerald-500/30'
     }
     if (status.status === 'error') {
-      return 'bg-rose-50 text-rose-900 border-rose-100 dark:bg-rose-500/15 dark:text-rose-200 dark:border-rose-500/30'
+      return 'bg-rose-50 border-rose-100 dark:bg-rose-500/15 dark:border-rose-500/30'
     }
-    return 'bg-amber-50 text-amber-900 border-amber-100 dark:bg-amber-500/15 dark:text-amber-200 dark:border-amber-500/30'
+    return 'bg-amber-50 border-amber-100 dark:bg-amber-500/15 dark:border-amber-500/30'
   }
 
   const getDotClass = () => {
@@ -31,13 +31,7 @@ function StatusBar({ status }) {
   }
 
   const getMessageClass = () => {
-    if (status.status === 'error') {
-      return 'text-rose-800 dark:text-rose-200'
-    }
-    if (status.status === 'healthy' && status.ready) {
-      return 'text-foreground dark:text-emerald-200'
-    }
-    return 'text-foreground dark:text-amber-200'
+    return 'text-foreground'
   }
 
   return (
