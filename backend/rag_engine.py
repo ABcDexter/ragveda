@@ -6,7 +6,7 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import asyncio
 
-from backend.config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, COLLECTION_NAME
+from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, COLLECTION_NAME
 
 class RAGEngine:
     """
