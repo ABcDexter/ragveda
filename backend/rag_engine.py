@@ -84,7 +84,7 @@ class RAGEngine:
                 max_output_tokens=GEMINI_MAX_OUTPUT_TOKENS,
                 temperature=GEMINI_TEMPERATURE,
             )
-            print("✓ Gemini LLM initialized")
+            print("✅ Gemini LLM initialized")
         except Exception as exc:
             self.llm = None
             self._gemini_config = None
@@ -243,7 +243,7 @@ class RAGEngine:
                 if response and getattr(response, "text", None):
                     return response.text.strip()
             except Exception as exc:
-                print(f"⚠ LLM generation failed, using extractive response: {exc}")
+                print(f"❌ LLM generation failed, using extractive response: \n{exc}")
 
         answer = (
             f"Based on the Bhagavad Gita, here's what I found relevant to your question:\n\n"
