@@ -129,6 +129,17 @@ Edit `backend/config.py` to adjust:
 - `CHUNK_SIZE`: Size of text chunks (default: 500 characters)
 - `CHUNK_OVERLAP`: Overlap between chunks (default: 50 characters)
 
+#### Optional watsonx.ai LLM
+
+Set these environment variables to enable improved LLM-based answers:
+
+- `WATSONX_API_KEY`
+- `WATSONX_PROJECT_ID`
+- `WATSONX_URL` (default: `https://us-south.ml.cloud.ibm.com`)
+- `WATSONX_MODEL_ID` (default: `mistralai/mistral-medium-2505`)
+- `WATSONX_MAX_NEW_TOKENS` (default: `256`)
+- `WATSONX_TEMPERATURE` (default: `0.5`)
+
 ### Frontend Configuration
 
 Edit `frontend/vite.config.js` to change:

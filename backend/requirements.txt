@@ -3,6 +3,8 @@ uvicorn[standard]==0.27.0
 python-dotenv==1.0.0
 langchain
 langchain-community
+langchain-ibm
+ibm-watsonx-ai
 chromadb==0.5.11
 sentence-transformers>=2.2.2
 numpy<2.0.0

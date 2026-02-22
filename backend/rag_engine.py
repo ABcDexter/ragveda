@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import List, Dict, Optional
 import chromadb
@@ -6,7 +5,18 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import asyncio
 
-from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, COLLECTION_NAME
+from backend.config import (
+    EMBEDDING_MODEL,
+    CHUNK_SIZE,
+    CHUNK_OVERLAP,
+    COLLECTION_NAME,
+    WATSONX_API_KEY,
+    WATSONX_MODEL_ID,
+    WATSONX_PROJECT_ID,
+    WATSONX_TEMPERATURE,
+    WATSONX_URL,
+    WATSONX_MAX_NEW_TOKENS,
+)
 
 class RAGEngine:
     """
@@ -20,6 +30,7 @@ class RAGEngine:
         self.chroma_client = None
         self.collection = None
         self._ready = False
+        self.llm = None
         
 
     async def initialize(self):
@@ -47,6 +58,8 @@ class RAGEngine:
                 metadata={"description": "Indian philosophy texts"}
             )
             print("✓ Created new collection")
+
+        self._initialize_llm()
         
         # Load and process data if file exists and collection is empty
         if self.data_file_path.exists():
@@ -55,6 +68,34 @@ class RAGEngine:
             self._ready = True
         else:
             print(f"⚠ Data file not found: {self.data_file_path}")
+
+
+    def _initialize_llm(self):
+        if not WATSONX_API_KEY or not WATSONX_PROJECT_ID:
+            print("ℹ️ Watsonx LLM disabled. Set WATSONX_API_KEY and WATSONX_PROJECT_ID to enable.")
+            return
+
+        try:
+            from ibm_watsonx_ai import Credentials
+            from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+            from langchain_ibm import WatsonxLLM
+
+            parameters = {
+                GenParams.MAX_NEW_TOKENS: WATSONX_MAX_NEW_TOKENS,
+                GenParams.TEMPERATURE: WATSONX_TEMPERATURE,
+            }
+
+            credentials = Credentials(api_key=WATSONX_API_KEY, url=WATSONX_URL)
+            self.llm = WatsonxLLM(
+                model_id=WATSONX_MODEL_ID,
+                project_id=WATSONX_PROJECT_ID,
+                params=parameters,
+                credentials=credentials,
+            )
+            print("✓ Watsonx LLM initialized")
+        except Exception as exc:
+            self.llm = None
+            print(f"⚠ Failed to initialize Watsonx LLM: {exc}")
             
 
     async def _load_data(self):
@@ -194,14 +235,30 @@ class RAGEngine:
         In a production system, this would use an LLM to generate a proper answer.
         """
         combined_context = "\n\n".join([f"Context {i+1}:\n{ctx}" for i, ctx in enumerate(contexts)])
-        
+
+        if self.llm:
+            prompt = (
+                "You are an expert assistant on the Bhagavad Gita and Indian philosophy. "
+                "Answer the question using ONLY the provided contexts. "
+                "If the answer is not present, say you don't have enough information.\n\n"
+                f"Question: {question}\n\n"
+                f"Contexts:\n{combined_context}\n\n"
+                "Answer in a concise, clear paragraph."
+            )
+            try:
+                response = self.llm.invoke(prompt)
+                if isinstance(response, str) and response.strip():
+                    return response.strip()
+            except Exception as exc:
+                print(f"⚠ LLM generation failed, using extractive response: {exc}")
+
         answer = (
             f"Based on the Bhagavad Gita, here's what I found relevant to your question:\n\n"
             f"{combined_context}\n\n"
             f"Note: This is a direct retrieval from the text. "
-            f"For a more synthesized answer, an LLM integration would be needed."
+            f"For a more synthesized answer, configure the LLM integration."
         )
-        
+
         return answer
     
 
