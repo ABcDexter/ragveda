@@ -129,6 +129,16 @@ Edit `backend/config.py` to adjust:
 - `CHUNK_SIZE`: Size of text chunks (default: 500 characters)
 - `CHUNK_OVERLAP`: Overlap between chunks (default: 50 characters)
 
+#### Optional Vertex AI Gemini
+
+Set these environment variables to enable Gemini-based answer synthesis:
+
+- `GEMINI_PROJECT_ID`
+- `GEMINI_LOCATION` (default: `us-central1`)
+- `GEMINI_MODEL_ID` (default: `gemini-1.5-flash`)
+- `GEMINI_MAX_OUTPUT_TOKENS` (default: `256`)
+- `GEMINI_TEMPERATURE` (default: `0.5`)
+
 ### Frontend Configuration
 
 Edit `frontend/vite.config.js` to change:
