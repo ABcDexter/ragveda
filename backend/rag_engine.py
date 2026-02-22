@@ -21,6 +21,7 @@ class RAGEngine:
         self.collection = None
         self._ready = False
         
+
     async def initialize(self):
         """Initialize the RAG engine with embeddings"""
         print("Initializing RAG engine...")
@@ -55,6 +56,7 @@ class RAGEngine:
         else:
             print(f"⚠ Data file not found: {self.data_file_path}")
             
+
     async def _load_data(self):
         """Load and chunk the text data, then create embeddings"""
         print(f"Loading data from {self.data_file_path}...")
@@ -86,6 +88,7 @@ class RAGEngine:
         
         print(f"✓ Loaded {len(chunks)} chunks into vector database")
     
+
     def _chunk_text(self, text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
         """
         Split text into overlapping chunks
@@ -138,6 +141,7 @@ class RAGEngine:
         
         return chunks
     
+
     async def ask(self, question: str, context_limit: int = 3) -> Dict:
         """
         Ask a question and get an answer based on the text
@@ -181,6 +185,7 @@ class RAGEngine:
             "sources": sources
         }
     
+
     def _generate_answer(self, question: str, contexts: List[str]) -> str:
         """
         Generate an answer based on retrieved contexts
@@ -199,9 +204,11 @@ class RAGEngine:
         
         return answer
     
+
     def is_ready(self) -> bool:
         """Check if the RAG engine is ready"""
         return self._ready
+    
     
     def get_stats(self) -> Dict:
         """Get statistics about the vector database"""

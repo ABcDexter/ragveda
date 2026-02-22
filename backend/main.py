@@ -18,7 +18,7 @@ app = FastAPI(
 # CORS configuration for React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "https://ragveda.in", "https://www.ragveda.in"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -63,6 +63,7 @@ async def startup_event():
         frontend_ready = False
         print("⚠ Frontend build not found or empty. Run 'npm run build' in frontend.")
 
+
 @app.get("/")
 async def root():
     """Serve frontend if available, else return an error."""
@@ -72,6 +73,7 @@ async def root():
             detail="Frontend build not found. Run 'npm run build' in the frontend folder."
         )
     return FileResponse(dist_path / "index.html")
+
 
 @app.get("/health")
 async def health():
@@ -86,6 +88,7 @@ async def health():
         "message": "RAG engine is ready" if is_ready else "Waiting for data to be loaded"
     }
 
+
 @app.get("/stats")
 async def stats():
     """Get statistics about the vector database"""
@@ -93,6 +96,7 @@ async def stats():
         raise HTTPException(status_code=503, detail="RAG engine not ready")
     
     return rag_engine.get_stats()
+
 
 @app.post("/ask", response_model=Answer)
 async def ask_question(question: Question):
@@ -121,6 +125,7 @@ async def ask_question(question: Question):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
+
 
 if __name__ == "__main__":
     import uvicorn
