@@ -9,3 +9,4 @@ numpy<2.0.0
 pydantic>=2.7.4
 pydantic-settings>=2.2.0
 python-multipart==0.0.22
+google-cloud-aiplatform>=1.49.0

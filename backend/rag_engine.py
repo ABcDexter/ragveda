@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import List, Dict, Optional
 import chromadb
@@ -6,7 +5,17 @@ from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import asyncio
 
-from config import EMBEDDING_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, COLLECTION_NAME
+from config import (
+    EMBEDDING_MODEL,
+    CHUNK_SIZE,
+    CHUNK_OVERLAP,
+    COLLECTION_NAME,
+    GEMINI_PROJECT_ID,
+    GEMINI_LOCATION,
+    GEMINI_MODEL_ID,
+    GEMINI_MAX_OUTPUT_TOKENS,
+    GEMINI_TEMPERATURE,
+)
 
 class RAGEngine:
     """
@@ -20,6 +29,7 @@ class RAGEngine:
         self.chroma_client = None
         self.collection = None
         self._ready = False
+        self.llm = None
         
 
     async def initialize(self):
@@ -48,6 +58,8 @@ class RAGEngine:
             )
             print("✓ Created new collection")
         
+        self._initialize_llm()
+
         # Load and process data if file exists and collection is empty
         if self.data_file_path.exists():
             if self.collection.count() == 0:
@@ -55,6 +67,28 @@ class RAGEngine:
             self._ready = True
         else:
             print(f"⚠ Data file not found: {self.data_file_path}")
+
+
+    def _initialize_llm(self):
+        if not GEMINI_PROJECT_ID:
+            print("ℹ️ Gemini LLM disabled. Set GEMINI_PROJECT_ID to enable.")
+            return
+
+        try:
+            import vertexai
+            from vertexai.generative_models import GenerationConfig, GenerativeModel
+
+            vertexai.init(project=GEMINI_PROJECT_ID, location=GEMINI_LOCATION)
+            self.llm = GenerativeModel(GEMINI_MODEL_ID)
+            self._gemini_config = GenerationConfig(
+                max_output_tokens=GEMINI_MAX_OUTPUT_TOKENS,
+                temperature=GEMINI_TEMPERATURE,
+            )
+            print("✅ Gemini LLM initialized")
+        except Exception as exc:
+            self.llm = None
+            self._gemini_config = None
+            print(f"⚠ Failed to initialize Gemini LLM: {exc}")
             
 
     async def _load_data(self):
@@ -194,14 +228,30 @@ class RAGEngine:
         In a production system, this would use an LLM to generate a proper answer.
         """
         combined_context = "\n\n".join([f"Context {i+1}:\n{ctx}" for i, ctx in enumerate(contexts)])
-        
+
+        if self.llm:
+            prompt = (
+                "You are an expert assistant on the Bhagavad Gita and Indian philosophy. "
+                "Answer the question using ONLY the provided contexts. "
+                "If the answer is not present, say you don't have enough information.\n\n"
+                f"Question: {question}\n\n"
+                f"Contexts:\n{combined_context}\n\n"
+                "Answer in a concise, clear paragraph."
+            )
+            try:
+                response = self.llm.generate_content(prompt, generation_config=self._gemini_config)
+                if response and getattr(response, "text", None):
+                    return response.text.strip()
+            except Exception as exc:
+                print(f"❌ LLM generation failed, using extractive response: \n{exc}")
+
         answer = (
             f"Based on the Bhagavad Gita, here's what I found relevant to your question:\n\n"
             f"{combined_context}\n\n"
             f"Note: This is a direct retrieval from the text. "
-            f"For a more synthesized answer, an LLM integration would be needed."
+            f"For a more synthesized answer, configure the LLM integration."
         )
-        
+
         return answer
     
 
