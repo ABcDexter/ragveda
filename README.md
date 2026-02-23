@@ -9,6 +9,7 @@ A modern Retrieval Augmented Generation (RAG) application that answers questions
 - **Vector Search**: Semantic search using sentence transformers and ChromaDB
 - **Real-time Chat**: Interactive question-answering interface
 - **Source Citations**: Shows relevant text passages that support answers
+- **Optional LLM Synthesis**: Gemini (Vertex AI) for richer answers
 
 ## 🏗️ Architecture
 
@@ -60,7 +61,14 @@ pip install -r requirements.txt
    - For a complete experience, replace with the full Bhagavad Gita text (~3000 lines)
    - The text will be automatically chunked and embedded on startup
 
-5. Start the backend server:
+5. (Optional) Enable Gemini answer synthesis:
+```bash
+export GEMINI_PROJECT_ID="73..."
+export GEMINI_LOCATION="us-central1"
+export GEMINI_MODEL_ID="gemini-1.5-flash"
+```
+
+6. Start the backend server:
 ```bash
 python main.py
 ```
@@ -129,6 +137,16 @@ Edit `backend/config.py` to adjust:
 - `CHUNK_SIZE`: Size of text chunks (default: 500 characters)
 - `CHUNK_OVERLAP`: Overlap between chunks (default: 50 characters)
 
+#### Optional Vertex AI Gemini
+
+Set these environment variables to enable Gemini-based answer synthesis:
+
+- `GEMINI_PROJECT_ID`
+- `GEMINI_LOCATION` (default: `us-central1`)
+- `GEMINI_MODEL_ID` (default: `gemini-1.5-flash`)
+- `GEMINI_MAX_OUTPUT_TOKENS` (default: `256`)
+- `GEMINI_TEMPERATURE` (default: `0.5`)
+
 ### Frontend Configuration
 
 Edit `frontend/vite.config.js` to change:
@@ -163,12 +181,15 @@ npm run build
 
 The built files will be in `frontend/dist/`
 
+If `frontend/dist` exists, the backend serves it at `/` and `/assets/*`.
+
 ## 📦 Dependencies
 
 ### Backend
 - FastAPI - Modern web framework
 - ChromaDB - Vector database
 - sentence-transformers - Text embeddings
+- Vertex AI SDK (optional) - Gemini answer synthesis
 - uvicorn - ASGI server
 
 ### Frontend
@@ -193,9 +214,13 @@ The built files will be in `frontend/dist/`
 - Subsequent startups will be faster (embeddings are cached in memory)
 - Consider using a smaller embedding model for faster processing
 
+### Gemini answers are truncated
+- Increase `GEMINI_MAX_OUTPUT_TOKENS`
+- Use a larger model like `gemini-1.5-pro` for richer output
+
 ## 🔮 Future Enhancements
 
-- [ ] Integration with LLM (OpenAI GPT, Anthropic Claude) for better answer synthesis
+- [ ] Add model selection in UI (Gemini Flash/Pro)
 - [ ] Support for multiple texts (Upanishads, Vedas, etc.)
 - [ ] Persistent vector database (save embeddings to disk)
 - [ ] User authentication and conversation history
