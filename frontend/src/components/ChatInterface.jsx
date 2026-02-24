@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useImperativeHandle } from 'react'
 import axios from 'axios'
 import API_BASE_URL from '../config'
 import Badge from './ui/badge'
@@ -6,7 +6,7 @@ import Button from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import Input from './ui/input'
 
-function ChatInterface({ apiReady }) {
+const ChatInterface = React.forwardRef(({ apiReady }, ref) => {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -24,6 +24,14 @@ function ChatInterface({ apiReady }) {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useImperativeHandle(ref, () => ({
+    resetChat() {
+      setMessages([])
+      setInput('')
+      setLoading(false)
+    }
+  }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -181,6 +189,8 @@ function ChatInterface({ apiReady }) {
       </CardContent>
     </Card>
   )
-}
+})
+
+ChatInterface.displayName = 'ChatInterface'
 
 export default ChatInterface

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ChatInterface from './components/ChatInterface'
 import Header from './components/Header'
 import StatusBar from './components/StatusBar'
@@ -6,6 +6,7 @@ import API_BASE_URL from './config'
 
 function App() {
   const [apiStatus, setApiStatus] = useState({ status: 'checking', ready: false })
+  const chatRef = useRef(null)
 
   useEffect(() => {
     // Check API health on mount
@@ -29,9 +30,9 @@ function App() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
       <div className="container py-10">
         <div className="space-y-6">
-          <Header />
+          <Header onStartAfresh={() => chatRef.current?.resetChat()} />
           <StatusBar status={apiStatus} />
-          <ChatInterface apiReady={apiStatus.ready} />
+          <ChatInterface ref={chatRef} apiReady={apiStatus.ready} />
         </div>
         <footer className="mt-10 text-center text-sm text-muted-foreground">
           Built with ❤️ · Powered by FastAPI & React · Inspired by the Bhagavad Gita...

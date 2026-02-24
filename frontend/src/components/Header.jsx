@@ -3,7 +3,7 @@ import Badge from './ui/badge'
 import Button from './ui/button'
 import ThemeToggle from './ThemeToggle'
 
-function Header() {
+function Header({ onStartAfresh }) {
   return (
     <div className="rounded-3xl border border-border bg-card/60 p-8 shadow-soft backdrop-blur">
       <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -25,7 +25,7 @@ function Header() {
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto">
           <ThemeToggle />
-          <Button className="w-full sm:w-auto" variant="default">
+          <Button className="w-full sm:w-auto" variant="default" onClick={onStartAfresh}>
             Start afresh
           </Button>
           <Button className="w-full sm:w-auto" variant="outline">
