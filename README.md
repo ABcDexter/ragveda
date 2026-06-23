@@ -200,7 +200,7 @@ If `frontend/dist` exists, the backend serves it at `/` and `/assets/*`.
 ## 🛠️ Troubleshooting
 
 ### Backend won't start
-- Ensure Python 3.8+ is installed
+- Ensure Python 3.11 is installed
 - Check if port 8000 is available
 - Verify `gita.txt` exists in the `data/` directory
 
