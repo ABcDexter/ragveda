@@ -48,6 +48,7 @@ const ChatInterface = React.forwardRef(({ apiReady }, ref) => {
     setLoading(true)
 
     try {
+      //console.log('[chat] Sending question to API:', API_BASE_URL, { question: input });
       const response = await axios.post(`${API_BASE_URL}/ask`, {
         question: input,
         context_limit: 3
