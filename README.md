@@ -194,7 +194,7 @@ If `frontend/dist` exists, the backend serves it at `/` and `/assets/*`.
 
 ### Frontend
 - React 18 - UI framework
-- Vite - Build tool
+- Vite - Build tool (6 or 7)
 - Axios - HTTP client
 
 ## 🛠️ Troubleshooting
