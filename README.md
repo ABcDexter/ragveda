@@ -234,6 +234,7 @@ MIT License - feel free to use this project for learning and development.
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+or send your Hedwig at anubhav@ragveda.in
 
 ## 📧 Contact
 
