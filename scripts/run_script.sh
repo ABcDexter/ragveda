@@ -2,7 +2,7 @@
 # Balo Baba ki jai
 # step 1: run the RAG engine
 source ~/.zshrc
-source ~/code/ragveda/backend
+cd ~/code/ragveda/backend
 source .venv/bin/activate
 pyenv shell 3.11
 python main.py &
